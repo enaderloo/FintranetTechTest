@@ -28,14 +28,14 @@ namespace FintranetTechTest.Infrastructure.Services
                 ExemptedDays = new List<DayOfWeek> { DayOfWeek.Saturday, DayOfWeek.Sunday },
                 ExemptedDates = new List<PublicHoliday>
                 {
-                    new PublicHoliday(1, 1),
-                    new PublicHoliday(3, 28, 29),
-                    new PublicHoliday(4, 1, 30),
-                    new PublicHoliday(5, 1, 8, 9),
-                    new PublicHoliday(6, 5, 6, 21),
-                    new PublicHoliday(7),
-                    new PublicHoliday(11, 1),
-                    new PublicHoliday(12, 24, 25, 26, 31)
+                    new(1, 1),
+                    new(3, 28, 29),
+                    new (4, 1, 30),
+                    new (5, 1, 8, 9),
+                    new (6, 5, 6, 21),
+                    new (7),
+                    new (11, 1),
+                    new (12, 24, 25, 26, 31)
                 },
                 SingleChargeRuleMinutes = 60,
                 ExemptedVehicleTypes = new List<VehicleType>
