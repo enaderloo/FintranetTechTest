@@ -25,4 +25,10 @@
     <Folder Include="Domain\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FintranetTechTest.Application\FintranetTechTest.Application.csproj" />
+    <ProjectReference Include="..\FintranetTechTest.Domain\FintranetTechTest.Domain.csproj" />
+    <ProjectReference Include="..\FintranetTechTest.Infrastructure\FintranetTechTest.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
