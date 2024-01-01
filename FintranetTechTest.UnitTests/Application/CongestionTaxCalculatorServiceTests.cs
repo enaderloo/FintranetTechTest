@@ -59,7 +59,7 @@ namespace FintranetTechTest.UnitTests.Application
                 "2013-03-28 14:07:27"
             };
 
-            List<DateTime> dateTimeList = new List<DateTime>();
+            List<DateTime> dateTimeList = new();
             foreach (string dateString in stringDateList)
             {
                 if (DateTime.TryParseExact(dateString, "yyyy-MM-dd HH:mm:ss", null,
@@ -79,5 +79,65 @@ namespace FintranetTechTest.UnitTests.Application
             // Assert
             result.ShouldBeGreaterThan(0);
         }
+
+        [Fact]
+        public void Tax_Must_Be_Zero_When_Dates_Are_Weekend()
+        {
+            // ARRANGE
+            List<string> stringDateList = new()
+            {
+               
+                "2013-01-05 08:24:00"
+            };
+
+            List<DateTime> dateTimeList = new();
+            foreach (string dateString in stringDateList)
+            {
+                if (DateTime.TryParseExact(dateString, "yyyy-MM-dd HH:mm:ss", null,
+                    System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+                {
+                    dateTimeList.Add(parsedDate);
+                }
+            }
+
+            var vehicle = new Vehicle(1, VehicleType.Car);
+            var congestionTaxCalculationInput = new CongestionTaxCalculationInput { Dates = dateTimeList, Vehicle = vehicle };
+
+            // ACT
+            var result = congestionTaxCalculatorService.CalculateCongestionTax(congestionTaxCalculationInput);
+
+            // Assert
+            result.ShouldBe(0);
+        }
+
+        [Fact]
+        public void Tax_Must_Be_Zero_When_Vehicle_Is_Exempted()
+        {
+            // ARRANGE
+            List<string> stringDateList = new()
+            {
+                "2013-01-10 08:24:00"
+            };
+
+            List<DateTime> dateTimeList = new();
+            foreach (string dateString in stringDateList)
+            {
+                if (DateTime.TryParseExact(dateString, "yyyy-MM-dd HH:mm:ss", null,
+                    System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+                {
+                    dateTimeList.Add(parsedDate);
+                }
+            }
+
+            var vehicle = new Vehicle(1, VehicleType.Diplomat);
+            var congestionTaxCalculationInput = new CongestionTaxCalculationInput { Dates = dateTimeList, Vehicle = vehicle };
+
+            // ACT
+            var result = congestionTaxCalculatorService.CalculateCongestionTax(congestionTaxCalculationInput);
+
+            // Assert
+            result.ShouldBe(0);
+        }
+
     }
 }
