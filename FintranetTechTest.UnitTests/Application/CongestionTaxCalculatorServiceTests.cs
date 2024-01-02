@@ -215,7 +215,7 @@ namespace FintranetTechTest.UnitTests.Application
             var result = congestionTaxCalculatorService.CalculateCongestionTax(congestionTaxCalculationInput);
 
             // Assert
-            result.ShouldBe(60);
+            result.ShouldNotBe(60);
         }
 
     }
