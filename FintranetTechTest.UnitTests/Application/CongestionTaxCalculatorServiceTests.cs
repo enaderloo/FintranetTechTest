@@ -140,7 +140,7 @@ namespace FintranetTechTest.UnitTests.Application
         }
 
         [Fact]
-        public void Return_60_SEK_Tax_When_More_Than_Vehicle_That_Passes_Several_Tolling_Stations_Per_Day()
+        public void Return_60_SEK_Tax_When_Vehicle_That_Passes_Several_Tolling_Stations_Per_Day()
         {
             // ARRANGE
             List<string> stringDateList = new()
@@ -178,15 +178,15 @@ namespace FintranetTechTest.UnitTests.Application
         }
 
         [Fact]
-        public void Return_More_Than_60_SEK_Tax_When_More_Than_Vehicle_That_Passes_Several_Tolling_Stations_Different_Days()
+        public void Return_More_Than_60_SEK_Tax_When_Vehicle_That_Passes_Several_Tolling_Stations_On_Different_Days()
         {
             // ARRANGE
             List<string> stringDateList = new()
             {
                 "2013-02-08 06:27:00",
 
-                "2013-02-09 06:20:27",
-                "2013-02-10 14:35:00",
+                "2013-02-09 06:20:27", // Weekend
+                "2013-02-10 14:35:00", // Weekend
 
                 "2013-02-11 15:29:00",
                 "2013-02-12 15:47:00",
@@ -194,8 +194,8 @@ namespace FintranetTechTest.UnitTests.Application
                 "2013-02-14 16:48:00",
                 "2013-02-15 17:49:00",
 
-                "2013-02-16 18:29:00",
-                "2013-02-17 18:35:00"
+                "2013-02-16 18:29:00",// Weekend
+                "2013-02-17 18:35:00" // Weekend
             };
 
             List<DateTime> dateTimeList = new();
