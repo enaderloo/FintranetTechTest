@@ -109,13 +109,13 @@ namespace FintranetTechTest.Application.Services
             {
                 result = 13;
             }
-            else if ((hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59) ||
-                     (hour == 15 && minute >= 30 && minute <= 59))
+            else if ((hour >= 8 && hour <= 14 && minute >= 30 && minute <= 59))
             {
                 result = 8;
             }
             else if ((hour == 7 && minute >= 0 && minute <= 59) ||
-                     (hour == 16 && minute <= 59))
+                     (hour == 16 && minute <= 59) ||
+                     (hour == 15 && minute >= 30 && minute <= 59))
             {
                 result = 18;
             }
