@@ -40,37 +40,45 @@ namespace FintranetTechTest.Application.Services
             CongestionTaxRules rules = _taxRulesProvider.GetTaxRules();
 
             int totalTax = 0;
-            DateTime intervalStart = input.Dates[0];
+            int maxTaxPerDay = rules.MaxTaxPerDay;
+            DateTime currentDate = DateTime.MinValue;
+            int currentDayTax = 0;
 
             foreach (DateTime date in input.Dates)
             {
                 if (IsApplicable(date, input.Vehicle.Type, rules))
                 {
-                    int nextFee = GetTaxAmountForTime(date.Hour, date.Minute);
-                    int tempFee = GetTaxAmountForTime(intervalStart.Hour, intervalStart.Minute);
-
-                    long diffInMillies = (long)(date - intervalStart).TotalMinutes;
-                    //long minutes = diffInMillies / 1000 / 60;
-
-                    if (diffInMillies <= rules.SingleChargeRuleMinutes)
+                    if (date.Date == currentDate.Date)
                     {
-                        if (totalTax > 0) totalTax -= tempFee;
-                        if (nextFee >= tempFee) tempFee = nextFee;
-                        totalTax += tempFee;
+                        currentDayTax += GetTaxAmountForTime(date.Hour, date.Minute);
                     }
                     else
                     {
-                        totalTax += nextFee;
+                        if (currentDayTax > maxTaxPerDay)
+                        {
+                            totalTax += maxTaxPerDay;
+                        }
+                        else
+                        {
+                            totalTax += currentDayTax;
+                        }
+                        currentDayTax = GetTaxAmountForTime(date.Hour, date.Minute);
+                        currentDate = date;
                     }
-
-                    //intervalStart = date;
                 }
-
             }
 
-            if (totalTax > rules.MaxTaxPerDay) totalTax = 60;
+            if (currentDayTax > maxTaxPerDay)
+            {
+                totalTax += maxTaxPerDay;
+            }
+            else
+            {
+                totalTax += currentDayTax;
+            }
 
             return totalTax;
+
 
         }
 

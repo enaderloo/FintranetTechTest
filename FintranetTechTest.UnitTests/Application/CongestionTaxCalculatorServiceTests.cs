@@ -140,7 +140,7 @@ namespace FintranetTechTest.UnitTests.Application
         }
 
         [Fact]
-        public void Return_60_SEK_Tax_When_Have_More_Than_Vehicle_that_Passes_Several_Tolling_Stations()
+        public void Return_60_SEK_Tax_When_More_Than_Vehicle_That_Passes_Several_Tolling_Stations_Per_Day()
         {
             // ARRANGE
             List<string> stringDateList = new()
@@ -155,6 +155,47 @@ namespace FintranetTechTest.UnitTests.Application
                 "2013-02-08 17:49:00",
                 "2013-02-08 18:29:00",
                 "2013-02-08 18:35:00"
+            };
+
+            List<DateTime> dateTimeList = new();
+            foreach (string dateString in stringDateList)
+            {
+                if (DateTime.TryParseExact(dateString, "yyyy-MM-dd HH:mm:ss", null,
+                    System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+                {
+                    dateTimeList.Add(parsedDate);
+                }
+            }
+
+            var vehicle = new Vehicle(1, VehicleType.Car);
+            var congestionTaxCalculationInput = new CongestionTaxCalculationInput { Dates = dateTimeList, Vehicle = vehicle };
+
+            // ACT
+            var result = congestionTaxCalculatorService.CalculateCongestionTax(congestionTaxCalculationInput);
+
+            // Assert
+            result.ShouldBe(60);
+        }
+
+        [Fact]
+        public void Return_More_Than_60_SEK_Tax_When_More_Than_Vehicle_That_Passes_Several_Tolling_Stations_Different_Days()
+        {
+            // ARRANGE
+            List<string> stringDateList = new()
+            {
+                "2013-02-08 06:27:00",
+
+                "2013-02-09 06:20:27",
+                "2013-02-10 14:35:00",
+
+                "2013-02-11 15:29:00",
+                "2013-02-12 15:47:00",
+                "2013-02-13 16:01:00",
+                "2013-02-14 16:48:00",
+                "2013-02-15 17:49:00",
+
+                "2013-02-16 18:29:00",
+                "2013-02-17 18:35:00"
             };
 
             List<DateTime> dateTimeList = new();
