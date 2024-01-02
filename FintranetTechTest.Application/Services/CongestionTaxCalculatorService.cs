@@ -39,33 +39,39 @@ namespace FintranetTechTest.Application.Services
 
             CongestionTaxRules rules = _taxRulesProvider.GetTaxRules();
 
+            int totalTax = 0;
             DateTime intervalStart = input.Dates[0];
-            int totalFee = 0;
 
-            foreach (var item in input.Dates)
+            foreach (DateTime date in input.Dates)
             {
-                if (IsApplicable(item, input.Vehicle.Type, rules))
+                if (IsApplicable(date, input.Vehicle.Type, rules))
                 {
-                    int nextFee = GetTaxAmountForTime(item.Hour, item.Minute);
+                    int nextFee = GetTaxAmountForTime(date.Hour, date.Minute);
                     int tempFee = GetTaxAmountForTime(intervalStart.Hour, intervalStart.Minute);
 
-                    long diffInMillies = item.Millisecond - intervalStart.Millisecond;
-                    long minutes = diffInMillies / 1000 / 60;
+                    long diffInMillies = (long)(date - intervalStart).TotalMinutes;
+                    //long minutes = diffInMillies / 1000 / 60;
 
-                    if (minutes <= rules.SingleChargeRuleMinutes)
+                    if (diffInMillies <= rules.SingleChargeRuleMinutes)
                     {
-                        if (totalFee > 0) totalFee -= tempFee;
+                        if (totalTax > 0) totalTax -= tempFee;
                         if (nextFee >= tempFee) tempFee = nextFee;
-                        totalFee += tempFee;
+                        totalTax += tempFee;
                     }
                     else
                     {
-                        totalFee += nextFee;
+                        totalTax += nextFee;
                     }
+
+                    //intervalStart = date;
                 }
+
             }
-            if (totalFee > 60) totalFee = 60;
-            return totalFee;
+
+            if (totalTax > rules.MaxTaxPerDay) totalTax = 60;
+
+            return totalTax;
+
         }
 
         public bool IsApplicable(DateTime currentTime, VehicleType vehicleType, CongestionTaxRules rules)
