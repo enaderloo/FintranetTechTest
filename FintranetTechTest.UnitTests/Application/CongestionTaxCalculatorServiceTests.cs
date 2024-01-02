@@ -140,7 +140,7 @@ namespace FintranetTechTest.UnitTests.Application
         }
 
         [Fact]
-        public void Return_55_SEK_Tax()
+        public void Return_60_SEK_Tax_When_Have_More_Than_Vehicle_that_Passes_Several_Tolling_Stations()
         {
             // ARRANGE
             List<string> stringDateList = new()
@@ -174,7 +174,7 @@ namespace FintranetTechTest.UnitTests.Application
             var result = congestionTaxCalculatorService.CalculateCongestionTax(congestionTaxCalculationInput);
 
             // Assert
-            result.ShouldBe(55);
+            result.ShouldBe(60);
         }
 
     }
