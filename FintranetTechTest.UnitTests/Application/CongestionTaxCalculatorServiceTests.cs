@@ -178,7 +178,7 @@ namespace FintranetTechTest.UnitTests.Application
         }
 
         [Fact]
-        public void Return_More_Than_60_SEK_Tax_When_Vehicle_That_Passes_Several_Tolling_Stations_On_Different_Days()
+        public void Return_More_Or_Less_Than_60_SEK_Tax_When_Vehicle_That_Passes_Several_Tolling_Stations_On_Different_Days()
         {
             // ARRANGE
             List<string> stringDateList = new()
